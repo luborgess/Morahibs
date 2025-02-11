@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PartnerStoresBanner from "./marketplace/PartnerStoresBanner";
+import CreateStoreDialog from "./store/CreateStoreDialog";
 import NewItemDialog, { NewItemData } from "./marketplace/NewItemDialog";
 import CategoryCarousel from "./marketplace/CategoryCarousel";
 import MarketplaceHeader from "./marketplace/MarketplaceHeader";
@@ -88,6 +90,7 @@ const Home = ({
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isNewItemDialogOpen, setIsNewItemDialogOpen] = useState(false);
+  const [isCreateStoreDialogOpen, setIsCreateStoreDialogOpen] = useState(false);
 
   const handleNewItem = (data: NewItemData) => {
     console.log("New item data:", data);
@@ -110,6 +113,7 @@ const Home = ({
         onFilter={onFilter}
         onSort={onSort}
       />
+      <PartnerStoresBanner />
       <main className="container mx-auto py-6 px-4">
         <CategoryCarousel
           selectedCategory={selectedCategory}
@@ -117,7 +121,22 @@ const Home = ({
         />
         <ItemGrid items={items} isInitialLoading={isLoading} />
       </main>
-      <FloatingActionButton onClick={() => setIsNewItemDialogOpen(true)} />
+      <div className="fixed bottom-6 right-6 flex flex-col gap-4">
+        <FloatingActionButton
+          onClick={() => setIsCreateStoreDialogOpen(true)}
+          label="Criar Loja"
+          icon="Store"
+        />
+        <FloatingActionButton
+          onClick={() => setIsNewItemDialogOpen(true)}
+          label="Novo Anúncio"
+          icon="Plus"
+        />
+      </div>
+      <CreateStoreDialog
+        open={isCreateStoreDialogOpen}
+        onOpenChange={setIsCreateStoreDialogOpen}
+      />
       <NewItemDialog
         open={isNewItemDialogOpen}
         onOpenChange={setIsNewItemDialogOpen}
